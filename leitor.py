@@ -37,8 +37,10 @@ def main():
 
     # Crie a tabela no banco de dados
     create_table()
+    barcode_data = None
+    app = True
 
-    while True:
+    while app:
         # Capture um quadro da câmera
         ret, frame = cap.read()
 
@@ -48,12 +50,15 @@ def main():
         # Exiba os resultados
         for obj in decoded_objects:
             barcode_data = obj.data.decode('utf-8')
+
             print(f'Código de barras detectado: {barcode_data}')
 
             # Insira o código de barras no banco de dados
             insert_barcode(barcode_data)
 
-            
+            if barcode_data != None:
+                app = False
+
 
         # Exiba o quadro
         cv2.imshow('Barcode Scanner', frame)
@@ -61,8 +66,10 @@ def main():
         # Verifique se a tecla 'q' foi pressionada para sair do loop
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+        
+  
 
-    # Libere os recursos
+   # Libere os recursos
     cap.release()
     cv2.destroyAllWindows()
 
