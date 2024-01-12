@@ -29,6 +29,8 @@ def main():
 
     # Crie a tabela no banco de dados
     create_table()
+    barcode_data = None
+    app = True
 
     while True:
         # Capture um quadro da câmera
@@ -45,15 +47,10 @@ def main():
             # Insira o código de barras no banco de dados
             insert_barcode(barcode_data)
 
-            # Desenhe um retângulo em torno do código de barras
-            points = obj.polygon
-            if len(points) == 4:
-                pts = []
-                for point in points:
-                    pts.append((point.x, point.y))
-                pts = tuple(pts)
-                cv2.polylines(frame, [pts], True, (0, 255, 0), 2)
+            if barcode_data != None:
+                app = False
 
+          
         # Exiba o quadro
         cv2.imshow('Barcode Scanner', frame)
 
